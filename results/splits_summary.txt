@@ -1,0 +1,12 @@
+CCPD2019 Split Summary
+==================================================
+
+ccpd_blur.txt: 20611 images
+ccpd_challenge.txt: 50003 images
+ccpd_db.txt: 10132 images
+ccpd_fn.txt: 20967 images
+ccpd_rotate.txt: 10053 images
+ccpd_tilt.txt: 30216 images
+test.txt: 141982 images
+train.txt: 100000 images
+val.txt: 99996 images
