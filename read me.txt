@@ -1,0 +1,118 @@
+* Project Description:
+
+Automatic License Plate Recognition System using Deep Learning
+This project implements an end-to-end Automatic License Plate Recognition (ALPR) system capable of detecting and recognizing Chinese and English license plates. The system uses a two-stage pipeline: YOLOv8 for real-time license plate detection and EasyOCR for character recognition. Trained on a combined dataset of over 41,000 images from CCPD2019 and Kaggle ALPR datasets, the system achieves robust performance across various challenging conditions including different lighting, angles, and weather conditions. The solution includes a user-friendly web interface built with Gradio, making it accessible for real-world applications such as parking management, traffic monitoring, and automated toll collection.
+
+
+Phase 1: Data Collection & Exploration
+What we did:
+
+-Downloaded two major datasets:
+	*CCPD2019: ~340,000 Chinese license plate images
+	*Kaggle ALPR: 21,161 annotated images
+-Created dataset_manager.py to explore and visualize the datasets
+-Created explore_alpr_labels.py to understand annotation formats
+
+***
+Phase 2: Data Processing & Unification
+What we did:
+
+Created ccpd_parser.py to decode CCPD filenames (they encode bbox, plate number, brightness, blur, etc.)
+Built dataset_converter.py to merge both datasets into unified YOLO format
+Created train/val/test splits with proper structure
+
+***
+Phase 3: Configuration & Setup
+What we did:
+
+Created centralized configuration file for all project settings
+Set up training parameters (epochs, batch size, learning rate,etc.)
+Configured paths and model settings
+
+***
+Phase 4: Detection Model Training
+What we did:
+
+Trained YOLOv8 (nano version) for license plate detection
+Used 50 epochs, batch size 16
+Applied data augmentation (flips, scaling, color adjustments)
+Monitored training with validation metrics
+
+***
+Phase 5: Complete ALPR Pipeline
+What we did:
+
+Integrated YOLOv8 detector with EasyOCR for text recognition
+Created preprocessing pipeline for better OCR accuracy
+Built end-to-end system: Image → Detection → Cropping → Recognition → Results
+
+Pipeline flow:
+
+1-Load image
+2-Detect license plates (YOLOv8)
+3-Crop detected regions with padding
+4-Preprocess crops (grayscale, denoise, enhance contrast)
+5-Recognize text (EasyOCR - Chinese + English)
+6-Return results with confidence scores
+
+Outcome: Working end-to-end ALPR system
+
+***
+Phase 6: Web Interface
+What we did:
+
+Created interactive web application using Gradio
+Users can upload images and get instant results
+Displays annotated images with bounding boxes and recognized text
+Shows confidence scores for both detection and recognition
+
+Features:
+
+-Drag-and-drop image upload
+-Real-time processing
+-Visual results with bounding boxes
+-Sample images for quick testing
+-Confidence scores display
+
+
+Complete Folder structure:
+
+ALPR-Project/
+├── data/
+│   ├── raw/                    
+│   │   ├── CCPD2019/          
+│   │   └── kaggle_alpr/        
+│   └── processed/
+│       └── unified_dataset/    
+│
+├── src/
+│   ├── config.py              # Configuration
+│   ├── dataset_manager.py     # Dataset exploration
+│   ├── ccpd_parser.py         # Parse CCPD filenames
+│   ├── dataset_converter.py   # Create unified dataset
+│   ├── train_detector.py      # Train YOLOv8
+│   └── alpr_pipeline.py       # Complete ALPR system
+│
+├── models/
+│   └── detector/
+│       └── yolov8_detector5/
+│           └── weights/
+│               └── best.pt     # Trained detector (3MB)
+│
+├── results/                    # Output images and data
+├── app.py                      # Web interface
+└── requirements.txt            # Dependencies
+
+
+
+*******
+How to Run the System:
+
+# 1. Install dependencies
+pip install -r requirements.txt
+
+# 2. Launch web interface
+python app.py
+
+# 3. Open browser at http://localhost:7860
+# 4. Upload an image and click "Detect & Recognize"
